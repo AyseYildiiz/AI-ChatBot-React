@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ChatBotApp.css";
 
-const ChatBotApp = ({ onGoBack, chats, setChats }) => {
+const ChatBotApp = ({
+  onGoBack,
+  chats,
+  setChats,
+  activeChat,
+  setActiveChat,
+  onNewChat,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState(chats[0]?.messages || []);
+
+  useEffect(() => {
+    const activeChatObj = chats.find((chat) => chat.id === activeChat);
+    if (activeChatObj) {
+      setMessages(activeChatObj.messages);
+    }
+  }, [activeChat, chats]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -20,13 +34,13 @@ const ChatBotApp = ({ onGoBack, chats, setChats }) => {
     setMessages(updatedMessages);
     setInputValue("");
 
-    const updateChats = chats.map((chat, index) => {
-      if (index === 0) {
+    const updatedChats = chats.map((chat) => {
+      if (chat.id === activeChat) {
         return { ...chat, messages: updatedMessages };
       }
       return chat;
     });
-    setChats(updateChats);
+    setChats(updatedChats);
   };
 
   const handleKeyDown = (e) => {
@@ -36,20 +50,43 @@ const ChatBotApp = ({ onGoBack, chats, setChats }) => {
     }
   };
 
+  const handleSelectedChat = (id) => {
+    setActiveChat(id);
+  };
+
+  const handleDeleteChat = (id) => {
+    const updatedChats = chats.filter((chat) => chat.id !== id);
+    setChats(updatedChats);
+    if (id === activeChat && updatedChats.length > 0) {
+      setActiveChat(updatedChats[0].id);
+    } else if (updatedChats.length === 0) {
+      setActiveChat(null);
+    }
+  };
+
   return (
     <div className="chat-app">
       <div className="chat-list">
         <div className="chat-list-header">
           <h2>Chat List</h2>
-          <i className="bx bx-edit-alt new-chat"></i>
+          <i className="bx bx-edit-alt new-chat" onClick={onNewChat}></i>
         </div>
-        {chats.map((chat, index) => (
+        {chats.map((chat) => (
           <div
             key={chat.id}
-            className={`chat-list-item ${index === 0 ? "active" : ""}`}
+            className={`chat-list-item ${
+              chat.id === activeChat ? "active" : ""
+            }`}
+            onClick={() => handleSelectedChat(chat.id)}
           >
-            <h4>{chat.id}</h4>
-            <i className="bx bx-x-circle"></i>
+            <h4>{chat.displayId}</h4>
+            <i
+              className="bx bx-x-circle"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteChat(chat.id);
+              }}
+            ></i>
           </div>
         ))}
       </div>

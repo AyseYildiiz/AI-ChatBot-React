@@ -63,6 +63,7 @@
 .chat-list-item i {
   font-size: 2.5rem;
   color: #f42f5f;
+  cursor: pointer;
 }
 
 .chat-window {
