@@ -10,15 +10,14 @@ const ChatBotApp = ({
   onNewChat,
 }) => {
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState(chats[0]?.messages || []);
+  const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
     const activeChatObj = chats.find((chat) => chat.id === activeChat);
-    if (activeChatObj) {
-      setMessages(activeChatObj.messages);
-    }
+
+    setMessages(activeChatObj ? activeChatObj.messages : []);
   }, [activeChat, chats]);
 
   const handleInputChange = (e) => {
@@ -32,66 +31,57 @@ const ChatBotApp = ({
       text: inputValue,
       timestamp: new Date().toLocaleTimeString(),
     };
+    if (!activeChat) {
+      onNewChat(inputValue);
+      setInputValue("");
+      return;
+    } else {
+      const updatedMessages = [...messages, newMessage];
+      setMessages(updatedMessages);
+      setInputValue("");
 
-const handleSendMessage = async () => {
-  if (inputValue.trim() === "") return;
-
-  const newMessage = {
-    type: "prompt",
-    text: inputValue,
-    timestamp: new Date().toLocaleTimeString(),
-  };
-
-  let updatedMessages = [...messages, newMessage];
-  setMessages(updatedMessages);
-  setInputValue("");
-
-  const updatedChats = chats.map((chat) => {
-    if (chat.id === activeChat) {
-      return { ...chat, messages: updatedMessages };
+      const updatedChats = chats.map((chat) => {
+        if (chat.id === activeChat) {
+          return { ...chat, messages: updatedMessages };
+        }
+        return chat;
+      });
+      setChats(updatedChats);
+      setIsTyping(true);
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: inputValue }],
+            max_tokens: 500,
+          }),
+        }
+      );
+      const data = await response.json();
+      const chatResponse = data.choices[0].message.content.trim();
+      const responseMessage = {
+        type: "response",
+        text: chatResponse,
+        timestamp: new Date().toLocaleTimeString(),
+      };
+      const updatedMessagesWithResponse = [...updatedMessages, responseMessage];
+      setMessages(updatedMessagesWithResponse);
+      setIsTyping(false);
+      const updatedChatsWithResponse = chats.map((chat) => {
+        if (chat.id === activeChat) {
+          return { ...chat, messages: updatedMessagesWithResponse };
+        }
+        return chat;
+      });
+      setChats(updatedChatsWithResponse);
     }
-    return chat;
-  });
-  setChats(updatedChats);
-
-  setIsTyping(true);
-
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: inputValue }],
-      max_tokens: 500,
-    }),
-  });
-
-  const data = await response.json();
-  const chatResponse = data.choices[0].message.content.trim();
-
-  const responseMessage = {
-    type: "response",
-    text: chatResponse,
-    timestamp: new Date().toLocaleTimeString(),
   };
-
-  const updatedMessagesWithResponse = [...updatedMessages, responseMessage];
-  setMessages(updatedMessagesWithResponse);
-
-  const updatedChatsWithResponse = chats.map((chat) => {
-    if (chat.id === activeChat) {
-      return { ...chat, messages: updatedMessagesWithResponse };
-    }
-    return chat;
-  });
-
-  setChats(updatedChatsWithResponse);
-  setIsTyping(false);
-};
-
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -107,10 +97,9 @@ const handleSendMessage = async () => {
   const handleDeleteChat = (id) => {
     const updatedChats = chats.filter((chat) => chat.id !== id);
     setChats(updatedChats);
-    if (id === activeChat && updatedChats.length > 0) {
-      setActiveChat(updatedChats[0].id);
-    } else if (updatedChats.length === 0) {
-      setActiveChat(null);
+    if (id === activeChat) {
+      const newActiveChat = updatedChats.length > 0 ? updatedChats[0].id : null;
+      setActiveChat(newActiveChat);
     }
   };
 
@@ -123,7 +112,10 @@ const handleSendMessage = async () => {
       <div className="chat-list">
         <div className="chat-list-header">
           <h2>Chat List</h2>
-          <i className="bx bx-edit-alt new-chat" onClick={onNewChat}></i>
+          <i
+            className="bx bx-edit-alt new-chat"
+            onClick={() => onNewChat()}
+          ></i>
         </div>
         {chats.map((chat) => (
           <div
