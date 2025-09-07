@@ -176,6 +176,12 @@
   justify-content: center;
 }
 
+.picker {
+  position: absolute;
+  bottom: 7rem;
+  left: 8rem;
+}
+
 .msg-input {
   height: 100%;
   flex-grow: 1;
