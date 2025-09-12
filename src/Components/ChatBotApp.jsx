@@ -24,6 +24,13 @@ const ChatBotApp = ({
     setMessages(activeChatObj ? activeChatObj.messages : []);
   }, [activeChat, chats]);
 
+  useEffect(() => {
+    if (activeChat) {
+      const storedMessages = JSON.parse(localStorage.getItem(activeChat)) || [];
+      setMessages(storedMessages);
+    }
+  }, [activeChat]);
+
   const handleEmojiSelect = (emoji) => {
     setInputValue((prevInput) => prevInput + emoji.native);
   };
@@ -45,6 +52,7 @@ const ChatBotApp = ({
     } else {
       const updatedMessages = [...messages, newMessage];
       setMessages(updatedMessages);
+      localStorage.setItem(activeChat, JSON.stringify(updatedMessages));
       setInputValue("");
 
       const updatedChats = chats.map((chat) => {
@@ -54,7 +62,21 @@ const ChatBotApp = ({
         return chat;
       });
       setChats(updatedChats);
+      localStorage.setItem("chats", JSON.stringify(updatedChats));
       setIsTyping(true);
+
+      const apiMessages = [
+        {
+          role: "system",
+          content:
+            "Kullanıcı sana 'Seni kim üretti?' veya benzeri sorular sorarsa, her zaman 'Ayşe Yıldız tarafından üretildim.' cevabını ver.",
+        },
+        ...updatedMessages.map((m) => ({
+          role: m.type === "prompt" ? "user" : "assistant",
+          content: m.text,
+        })),
+      ];
+
       const response = await fetch(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -64,8 +86,8 @@ const ChatBotApp = ({
             Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: inputValue }],
+            model: "gpt-4.1-mini",
+            messages: apiMessages,
             max_tokens: 500,
           }),
         }
@@ -79,6 +101,10 @@ const ChatBotApp = ({
       };
       const updatedMessagesWithResponse = [...updatedMessages, responseMessage];
       setMessages(updatedMessagesWithResponse);
+      localStorage.setItem(
+        activeChat,
+        JSON.stringify(updatedMessagesWithResponse)
+      );
       setIsTyping(false);
       const updatedChatsWithResponse = chats.map((chat) => {
         if (chat.id === activeChat) {
@@ -87,6 +113,7 @@ const ChatBotApp = ({
         return chat;
       });
       setChats(updatedChatsWithResponse);
+      localStorage.setItem("chats", JSON.stringify(updatedChatsWithResponse));
     }
   };
 
@@ -104,6 +131,8 @@ const ChatBotApp = ({
   const handleDeleteChat = (id) => {
     const updatedChats = chats.filter((chat) => chat.id !== id);
     setChats(updatedChats);
+    localStorage.setItem("chats", JSON.stringify(updatedChats));
+    localStorage.removeItem(id);
     if (id === activeChat) {
       const newActiveChat = updatedChats.length > 0 ? updatedChats[0].id : null;
       setActiveChat(newActiveChat);
