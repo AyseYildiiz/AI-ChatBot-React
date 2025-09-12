@@ -145,12 +145,16 @@ const ChatBotApp = ({
 
   return (
     <div className="chat-app">
-      <div className="chat-list">
+      <div className={`chat-list ${showChatList ? "show" : ""}`}>
         <div className="chat-list-header">
           <h2>Chat List</h2>
           <i
             className="bx bx-edit-alt new-chat"
             onClick={() => onNewChat()}
+          ></i>
+          <i
+            className="bx bx-x-circle close-list"
+            onClick={() => setShowChatList(false)}
           ></i>
         </div>
         {chats.map((chat) => (
@@ -175,6 +179,7 @@ const ChatBotApp = ({
       <div className="chat-window">
         <div className="chat-title">
           <h3>Chat with AI</h3>
+          <i className="bx bx-menu" onClick={() => setShowChatList(true)}></i>
           <i className="bx bx-arrow-back arrow" onClick={onGoBack}></i>
         </div>
         <div className="chat">
