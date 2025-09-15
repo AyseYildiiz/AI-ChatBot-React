@@ -86,10 +86,10 @@ const ChatBotApp = ({
             Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
           },
           body: JSON.stringify({
-            model: "gpt-4.1-mini",
+            model: "gpt-4o-mini",
             messages: apiMessages,
             max_tokens: 500,
-            temparature: 0.2,
+            temperature: 0.2,
           }),
         }
       );
