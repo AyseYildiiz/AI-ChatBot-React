@@ -69,7 +69,7 @@ const ChatBotApp = ({
         {
           role: "system",
           content:
-            "Kullanıcı sana 'Seni kim üretti?' veya benzeri sorular sorarsa, her zaman 'Ayşe Yıldızzz tarafından üretildim.' cevabını ver.",
+            "Kullanıcı sana 'Seni kim üretti?' veya benzeri sorular sorarsa, her zaman 'Ayşe Yıldız tarafından üretildim.' cevabını ver.",
         },
         ...updatedMessages.map((m) => ({
           role: m.type === "prompt" ? "user" : "assistant",
