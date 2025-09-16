@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +10,13 @@
 
 html {
   font-size: 62.5%;
+  height: 100%; 
+}
+
+body {
+  height: 100%; 
+  overflow-x: hidden; 
+  background-color: #131927; 
 }
 
 .container {
@@ -20,7 +28,7 @@ html {
 }
 
 @media (max-width: 500px) {
-  .html {
+  html { 
     font-size: 55%;
   }
 }
