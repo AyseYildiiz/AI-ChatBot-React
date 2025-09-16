@@ -183,7 +183,7 @@ const ChatBotApp = ({
           <i className="bx bx-menu" onClick={() => setShowChatList(true)}></i>
           <i className="bx bx-arrow-back arrow" onClick={onGoBack}></i>
         </div>
-        <div className="chat">
+        <div className="chat" onClick={()=>setShowChatList(false)}>
           {messages.map((msg, idx) => (
             <div
               key={idx}
