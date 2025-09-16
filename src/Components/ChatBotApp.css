@@ -237,10 +237,30 @@
 
 @media (max-width: 500px) {
   .chat-list {
-    width: 60%;
+    width: 70%;
   }
   .picker {
     bottom: 7rem;
     left: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .chat-list {
+    width: 80%;
+  }
+
+  .chat-title h3 {
+    font-size: 1.4rem;
+  }
+
+  .prompt,
+  .response {
+    font-size: 1.2rem;
+    padding: 0.8rem;
+  }
+
+  .msg-input {
+    font-size: 1.4rem;
   }
 }
