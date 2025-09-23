@@ -172,7 +172,7 @@ const ChatBotApp = ({
               .join("\n\n");
 
           const searchInfoMessage = {
-            type: "system",
+            type: "response",
             text: `🔍 ${
               results[0].source || "Google"
             } ile web araması yapıldı. Yanıt güncel bilgilere göre hazırlanıyor.`,
@@ -247,7 +247,7 @@ asistan gibi yanıt ver ve Ayşe Yıldız'dan bahsetme.${
       let finalUpdatedMessages;
       if (webSearchResults && webSearchResults.length > 0) {
         const searchInfoMessage = {
-          type: "system",
+          type: "response",
           text: `🔍 ${
             webSearchResults[0].source || "Google"
           } ile web araması yapıldı. Yanıt güncel bilgilere göre hazırlanıyor.`,
@@ -346,13 +346,7 @@ asistan gibi yanıt ver ve Ayşe Yıldız'dan bahsetme.${
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={
-                msg.type === "prompt"
-                  ? "prompt"
-                  : msg.type === "system"
-                  ? "system"
-                  : "response"
-              }
+              className={msg.type === "prompt" ? "prompt" : "response"}
             >
               {msg.text}
               <span> {msg.timestamp}</span>
