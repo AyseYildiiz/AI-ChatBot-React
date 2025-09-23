@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -274,4 +275,13 @@ html, body {
   .msg-input {
     font-size: 1.4rem;
   }
+}
+
+.system {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-style: italic;
+  padding: 8px;
+  margin: 5px 0;
+  border-left: 3px solid #2196f3;
 }
