@@ -1,12 +1,49 @@
-# React + Vite
+# 🤖 ChatBot App  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kullanıcılarla etkileşim kurabilen, mesaj geçmişini saklayan ve gerektiğinde Google üzerinden arama yapabilen bir **React tabanlı ChatBot uygulaması**.  
 
-Currently, two official plugins are available:
+🌐 Canlı Demo: [chit-chat.com.tr](https://chit-chat.com.tr/)  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<img width="540" height="540" alt="Adsız tasarım (1)" src="https://github.com/user-attachments/assets/62c10983-8302-44e2-823e-dcdb0f58ba7f" />
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Özellikler  
+- 💬 Gerçek zamanlı sohbet  
+- 😊 Emoji desteği (Emoji Mart)  
+- 📂 Sohbet geçmişi ve çoklu chat yönetimi (LocalStorage ile)  
+- 🔎 Google API entegrasyonu ile web araması  
+- 🧠 OpenAI API entegrasyonu (chat completions)  
+- 📱 Responsive tasarım (mobil uyumlu arayüz)  
+
+## 🛠️ Kullanılan Teknolojiler  
+- React.js  
+- OpenAI API  
+- Google Custom Search API  
+- LocalStorage  
+- Emoji Mart  
+- CSS  
+
+## 📦 Kurulum  
+
+Projeyi kendi bilgisayarında çalıştırmak için:  
+
+```bash
+# Repoyu klonla
+git clone https://github.com/kullanici-adi/chatbot-app.git
+
+# Proje klasörüne gir
+cd chatbot-app
+
+# Bağımlılıkları yükle
+npm install
+
+# Uygulamayı başlat
+npm run dev
+
+## 🔑 Ortam Değişkenleri
+Projenin çalışması için .env dosyası oluşturup aşağıdaki değişkenleri eklemelisin:
+
+VITE_OPENAI_API_KEY=your_openai_api_key
+VITE_GOOGLE_API_KEY=your_google_api_key
+VITE_GOOGLE_CX=your_google_custom_search_cx
+
