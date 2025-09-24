@@ -65,17 +65,19 @@ const ChatBotApp = ({
     return searchKeywords.some((keyword) => lowerQuery.includes(keyword));
   };
 
-  const API_KEY = import.meta.env.GOOGLE_API_KEY;
-  const SEARCH_ENGINE_ID = import.meta.env.SEARCH_ENGINE_ID;
+  const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+  const SEARCH_ENGINE_ID = import.meta.env.VITE_SEARCH_ENGINE_ID;
 
   const performWebSearch = async (query) => {
     try {
       setIsSearching(true);
       console.log("Performing web search for query:", query);
 
-      const googleResponse = await fetch(
-        `/api/search?q=${encodeURIComponent(query)}`
-      );
+      const googleSearchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${encodeURIComponent(
+        query
+      )}`;
+
+      const googleResponse = await fetch(googleSearchUrl);
 
       if (!googleResponse.ok) {
         console.error("Google API hatası:", googleResponse.statusText);
@@ -213,18 +215,22 @@ asistan gibi yanıt ver ve Ayşe Yıldız'dan bahsetme.${
         })),
       ];
 
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: apiMessages,
-          max_tokens: 500,
-          temperature: 0.2,
-        }),
-      });
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: apiMessages,
+            max_tokens: 500,
+            temperature: 0.2,
+          }),
+        }
+      );
       const data = await response.json();
       let chatResponse = data.choices[0].message.content.trim();
       if (webSearchResults && webSearchResults.length > 0) {
