@@ -4,7 +4,8 @@ Kullanıcılarla etkileşim kurabilen, mesaj geçmişini saklayan ve gerektiğin
 
 🌐 Canlı Demo: [chit-chat.com.tr](https://chit-chat.com.tr/)  
 
-<img width="540" height="540" alt="Adsız tasarım (1)" src="https://github.com/user-attachments/assets/62c10983-8302-44e2-823e-dcdb0f58ba7f" />
+<img width="800" height="530" alt="zFyehuD9hab (1) (1)" src="https://github.com/user-attachments/assets/a1661e9c-184e-4594-8f54-5789786b923a" />
+
 
 
 ## 🚀 Özellikler  
