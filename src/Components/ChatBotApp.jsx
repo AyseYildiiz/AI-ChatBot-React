@@ -65,9 +65,6 @@ const ChatBotApp = ({
     return searchKeywords.some((keyword) => lowerQuery.includes(keyword));
   };
 
-  const API_KEY = import.meta.env.GOOGLE_API_KEY;
-  const SEARCH_ENGINE_ID = import.meta.env.SEARCH_ENGINE_ID;
-
   const performWebSearch = async (query) => {
     try {
       setIsSearching(true);
