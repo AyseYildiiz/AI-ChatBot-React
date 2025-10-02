@@ -10,7 +10,7 @@ Kullanıcılarla etkileşim kurabilen, mesaj geçmişini saklayan ve gerektiğin
 
 ## 🚀 Özellikler  
 - 💬 Gerçek zamanlı sohbet  
-- 😊 Emoji desteği (Emoji Mart)  
+- 😊 Emoji desteği  
 - 📂 Sohbet geçmişi ve çoklu chat yönetimi (LocalStorage ile)  
 - 🔎 Google API entegrasyonu ile web araması  
 - 🧠 OpenAI API entegrasyonu (chat completions)  
@@ -21,8 +21,6 @@ Kullanıcılarla etkileşim kurabilen, mesaj geçmişini saklayan ve gerektiğin
 - OpenAI API  
 - Google Custom Search API  
 - LocalStorage  
-- Emoji Mart  
-- CSS  
 
 ## 📦 Kurulum  
 
